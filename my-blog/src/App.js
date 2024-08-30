@@ -19,6 +19,7 @@ function App() {
             <Route path='/about' element={<AboutPage />} />
             <Route path='/articles' element={<ArticleList />} />
             <Route path='/articles/:articleId' element={<ArticlePage />} />
+            // :articleId is url parameter - we use url parameter when we want a single component to be able to display multiple different items/pages as if we had different page for each item
           </Routes>
         </div>
       </div>
