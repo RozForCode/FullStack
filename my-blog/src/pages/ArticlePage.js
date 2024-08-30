@@ -14,7 +14,7 @@ const ArticlePage = () => {
 
             <h1>This is the Article page for article with id: {articleId}!</h1>
             {article.content.map(p => (
-                <p>{p}</p>
+                <p key={p}>{p}</p>
             ))}
         </>
     )
