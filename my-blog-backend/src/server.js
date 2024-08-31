@@ -3,7 +3,11 @@ import express from 'express';
 const app = express();
 app.use(express.json());
 
-let articlesInfo = [{ name: 'learn-react', upvotes: 0 }, { name: 'mongodb', upvotes: 0 }, { name: 'learn-node', upvotes: 0 }]
+let articlesInfo = [
+    { name: 'learn-react', upvotes: 0, comments: [] },
+    { name: 'mongodb', upvotes: 0, comments: [] },
+    { name: 'learn-node', upvotes: 0, comments: [] }
+]
 // app.get('/hello/:name', (req, res) => {
 //     const name = req.params.name;
 //     // const {name } = req.params //object destructuring
@@ -26,6 +30,19 @@ app.put('/api/articles/:name/upvote', (req, res) => {
     }
 
 })
+app.post('/api/articles/:name/comments', (req, res) => {
+    const { postedBy, text } = req.body;
+    const { name } = req.params;
+
+    const article = articlesInfo.find(article => article.name === name);
+    if (article) {
+        article.comments.push({ postedBy, text })
+        res.send(article.comments)
+    } else {
+        res.send(`Article doesn't exist`)
+    }
+})
+
 app.post('/hello', (req, res) => {
     console.log(req.body)
     res.send(`Hello! ${req.body.name}`);
