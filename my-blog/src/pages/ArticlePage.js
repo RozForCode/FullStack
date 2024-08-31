@@ -2,6 +2,7 @@
 //example of url - using hook useParams
 import { useParams } from "react-router-dom";
 import articles from "./article-content";
+import NotFoundPage from "./NotFoundPage";
 
 const ArticlePage = () => {
     const params = useParams();
@@ -9,6 +10,9 @@ const ArticlePage = () => {
     const article = articles.find(article => article.name === articleId)
     // or const {articleId} = params
     // or const {articleId} = useParams;
+    if (!article) {
+        return (<NotFoundPage />)
+    }
     return (
         <>
 
