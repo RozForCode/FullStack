@@ -35,6 +35,15 @@ const ArticlePage = () => {
 
             <h1>This is the Article page for article with id: {articleId}!</h1>
             <h2>This is article has {articleInfo.upvotes} upvotes!</h2>
+            <h3>Comments</h3>
+            <ul>
+                {articleInfo.comments.map(
+                    p => (
+                        <li key={p.postedBy}>{p.postedBy} says {p.text}</li>
+                    )
+                )}
+            </ul>
+            <h2>Article Content</h2>
             {article.content.map(p => (
                 <p key={p}>{p}</p>
             ))}
