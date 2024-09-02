@@ -1,12 +1,15 @@
 import fs from 'fs';
-import admin, { credential } from 'firebase-admin';
+import admin from 'firebase-admin';
 import express from 'express';
 import { MongoClient } from 'mongodb';
 
 const credentails = JSON.parse(
-    fs.readFileSync('../credentials.json')
+    fs.readFileSync('./confidentail.json')
 );
-admin.initializeApp({ credential: admin.credential.cert(credentails) });
+admin.initializeApp(
+    {
+        credential: admin.credential.cert(credentails)
+    });
 
 "use strict";
 const app = express();
@@ -14,14 +17,17 @@ app.use(express.json());
 
 app.use(async (req, res, next) => {
     const { authtoken } = req.headers;//case insensitive
+
     try {
         if (authtoken) {
             const user = await admin.auth().verifyIdToken(authtoken);
             req.user = user;
         }
     } catch (e) {
-        res.sendStatus(404);
+        return res.sendStatus(404);
     }
+    req.user = req.user || {};
+
     next();
 })
 
@@ -63,15 +69,15 @@ app.put('/api/articles/:name/upvote', async (req, res) => {
 
     if (article) {
         const upvoteIds = article.upvoteIds || [];
-        const canUpVote = uid && !upvoteIds.include(uid);
+        const canUpVote = uid && !upvoteIds.includes(uid);
         if (canUpVote) {
             await db.collection('articles').updateOne({ name }, {
                 $inc: { upvotes: 1 },
                 $push: { upvoteIds: uid }
             })
         }
-        const article = await db.collection('articles').findOne({ name });
-        res.json(article);
+        const updatedArticle = await db.collection('articles').findOne({ name });
+        res.json(updatedArticle);
     }
     else {
         res.sendStatus(404);
