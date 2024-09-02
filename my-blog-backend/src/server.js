@@ -1,7 +1,12 @@
+"use strict";
 import fs from 'fs';
 import admin from 'firebase-admin';
+import path from 'path';
 import express from 'express';
 import { MongoClient } from 'mongodb';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename);
 
 const credentails = JSON.parse(
     fs.readFileSync('./confidentail.json')
@@ -11,9 +16,14 @@ admin.initializeApp(
         credential: admin.credential.cert(credentails)
     });
 
-"use strict";
 const app = express();
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../build')))
+app.get(new RegExp('^(?!\/api.+)'), (req, res) => {
+    res.sendFile(path.join(__dirname), '../build/index.html')
+})
+
+
 
 app.use(async (req, res, next) => {
     const { authtoken } = req.headers;//case insensitive
