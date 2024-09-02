@@ -6,14 +6,14 @@ import NotFoundPage from "./NotFoundPage";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import AddCommentForm from "../components/AddCommentForm";
-
-
+import useUser from "../hooks/useUser";
+import { Link } from 'react-router-dom';
 
 
 const ArticlePage = () => {
     const [articleInfo, setArticleInfo] = useState({ upvotes: 0, comments: [] })
     const { articleId } = useParams();
-
+    const { user, isLoading } = useUser();
 
     useEffect(() => {
         const loadArticleInfo = async () => {
@@ -42,7 +42,11 @@ const ArticlePage = () => {
             <h1>This is the Article page for article with id: {articleId}!</h1>
             <div className="upvotes-section">
                 <h3>This is article has {articleInfo.upvotes} upvotes!</h3>
-                <button onClick={addUpvote}>Upvote</button>
+                {user ? <button onClick={addUpvote}>Upvote</button> :
+                    <Link to='/login'>
+                        <button>Log In to upvote</button>
+                    </Link>}
+
             </div>
 
             <h2>Article Content</h2>
@@ -50,7 +54,12 @@ const ArticlePage = () => {
                 <p key={p}>{p}</p>
             ))}
             <h3>Comments</h3>
-            <AddCommentForm articleName={articleId} onArticleUpdated={updatedArticle => setArticleInfo(updatedArticle)} />
+            {user ?
+                <AddCommentForm articleName={articleId} onArticleUpdated={updatedArticle => setArticleInfo(updatedArticle)} /> :
+                <Link to='/login'>
+                    <button >Log In to comment</button>
+                </Link>
+            }
 
             {articleInfo.comments.map(
                 p => (
