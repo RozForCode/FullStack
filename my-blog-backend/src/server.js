@@ -42,7 +42,7 @@ app.get('/api/articles/:name', async (req, res) => {
     const { uid } = req.user;
     if (article) {
         const upvoteIds = article.upvoteIds || [];
-        article.canUpVote = uid && !upvoteIds.include(uid);
+        article.canUpVote = uid && !upvoteIds.includes(uid);
         res.json(article);
     }
     else {

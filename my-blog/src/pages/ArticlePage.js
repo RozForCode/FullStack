@@ -11,7 +11,8 @@ import { Link } from 'react-router-dom';
 
 
 const ArticlePage = () => {
-    const [articleInfo, setArticleInfo] = useState({ upvotes: 0, comments: [] })
+    const [articleInfo, setArticleInfo] = useState({ upvotes: 0, comments: [], canUpvote: false })
+    const { canUpvote } = articleInfo;
     const { articleId } = useParams();
     const { user, isLoading } = useUser();
 
@@ -27,8 +28,10 @@ const ArticlePage = () => {
             setArticleInfo(newArticleInfo)
 
         }
-        loadArticleInfo();
-    }, [])
+        if (isLoading) {
+            loadArticleInfo();
+        }
+    }, [isLoading, user])
     const article = articles.find(article => article.name === articleId)
 
 
@@ -52,7 +55,8 @@ const ArticlePage = () => {
             <h1>This is the Article page for article with id: {articleId}!</h1>
             <div className="upvotes-section">
                 <h3>This is article has {articleInfo.upvotes} upvotes!</h3>
-                {user ? <button onClick={addUpvote}>Upvote</button> :
+                {user ?
+                    <button onClick={addUpvote}>{canUpvote ? 'UpVote' : 'Already Upvoted'}</button> :
                     <Link to='/login'>
                         <button>Log In to upvote</button>
                     </Link>}
