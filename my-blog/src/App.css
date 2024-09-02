@@ -115,3 +115,11 @@ p {
   top: 8px;
   right: 8px;
 }
+
+
+.login-link {
+  text-align: center;
+  margin: 10px;
+  display: block;
+  color: black;
+}
