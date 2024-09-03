@@ -3,3 +3,4 @@ node_modules
 mongo-db-data
 my-blog-backend/confidentail.json
 // if file is already been tracked git ignore doesn't work
+my-blog-backend/.env
