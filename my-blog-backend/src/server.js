@@ -5,8 +5,10 @@ import path from 'path';
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url)
+import 'dotenv/config';
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 const credentails = JSON.parse(
     fs.readFileSync('./confidentail.json')
@@ -43,7 +45,7 @@ app.use(async (req, res, next) => {
 
 app.get('/api/articles/:name', async (req, res) => {
     const { name } = req.params;
-    const client = new MongoClient('mongodb://127.0.0.1:27017');
+    const client = new MongoClient(`mongodb+srv://navrosesinghjohal:${process.env.MONGO_PASSWORD}@cluster0.tpl3k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
     await client.connect();
 
     const db = client.db('react-blog-db');
@@ -70,7 +72,7 @@ app.use((req, res, next) => {
 })
 app.put('/api/articles/:name/upvote', async (req, res) => {
     const { name } = req.params;
-    const client = new MongoClient('mongodb://127.0.0.1:27017');
+    const client = new MongoClient(`mongodb+srv://navrosesinghjohal:${process.env.MONGO_PASSWORD}@cluster0.tpl3k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
     await client.connect();
 
     const db = client.db('react-blog-db');
@@ -99,7 +101,7 @@ app.post('/api/articles/:name/comments', async (req, res) => {
     const { name } = req.params;
     const { email } = req.user;
 
-    const client = new MongoClient('mongodb://127.0.0.1:27017');
+    const client = new MongoClient(`mongodb+srv://navrosesinghjohal:${process.env.MONGO_PASSWORD}@cluster0.tpl3k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
     await client.connect();
 
     const db = client.db('react-blog-db');

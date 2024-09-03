@@ -28,7 +28,7 @@ const ArticlePage = () => {
             setArticleInfo(newArticleInfo)
 
         }
-        if (isLoading) {
+        if (!isLoading) {
             loadArticleInfo();
         }
     }, [isLoading, user])
@@ -56,7 +56,7 @@ const ArticlePage = () => {
             <div className="upvotes-section">
                 <h3>This is article has {articleInfo.upvotes} upvotes!</h3>
                 {user ?
-                    <button onClick={addUpvote}>{canUpvote ? 'UpVote' : 'Already Upvoted'}</button> :
+                    <button onClick={addUpvote}>Upvote</button> :
                     <Link to='/login'>
                         <button>Log In to upvote</button>
                     </Link>}
