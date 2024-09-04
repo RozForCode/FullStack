@@ -1,2 +1,2 @@
 # FullStack
-Will contain FullStack Projects
+Contains FullStack Projects made using React.
